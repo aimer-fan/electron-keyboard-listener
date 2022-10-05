@@ -65,7 +65,9 @@
         [
           "@timfish/forge-externals-plugin",
           {
-            "externals": ["node-global-key-listener"],
+            "externals": [
+              "node-global-key-listener"
+            ],
             "includeDeps": true
           }
         ]
@@ -109,6 +111,7 @@
     "echarts": "^5.4.0",
     "electron-squirrel-startup": "^1.0.0",
     "element-plus": "^2.2.17",
+    "mitt": "^3.0.0",
     "node-global-key-listener": "^0.1.1",
     "vue": "^3.2.40"
   }

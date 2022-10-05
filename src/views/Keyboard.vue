@@ -1,37 +1,30 @@
 <script lang="ts" setup>
-import KeyboardItem from './KeyboardItem.vue';
-import { defaultKeyboardData } from '../constant'
 import { onMounted } from 'vue';
 import { IGlobalKeyEvent } from 'node-global-key-listener';
-import { computed, ref } from 'vue';
+import LoffeeKeyboard from './keyboardLayouts/LoffeeKeyboard.vue';
+import emitter from './mitt';
+import { IpcKeyboardEvent, StorageKeyboardType } from '../constant';
+import MacOSKeyboard from './keyboardLayouts/MacOSKeyboard.vue'
+import { useStorage } from '@vueuse/core';
 
-const keyboardData = ref(defaultKeyboardData)
-
-const flatKeyboardData = computed(() => keyboardData.value.flat(1))
+const type = useStorage(StorageKeyboardType, 'Default')
 
 onMounted(() => {
   window.ElectronAPI.handleIpcKeyboardEvent((e: Electron.IpcRendererEvent, data: IGlobalKeyEvent) => {
-    const target = flatKeyboardData.value.find(item => item.id === data.name)
-    if (target) {
-      target.active = data.state === "DOWN"
-    }
+    emitter.emit(IpcKeyboardEvent, data)
   })
 })
 </script>
 
 <template>
-  <div style="width: 900px;">
-    <el-card>
-      <div class="flex justify-between mb-2 last:mb-0" v-for="(row, index) in keyboardData" :key="index">
-        <KeyboardItem
-          v-for="k in row"
-          :key="k.id"
-          :id="k.id"
-          :content="k.name"
-          :active="k.active"
-          :width="k.width"
-        />
-      </div>
-    </el-card>
+  <div class="h-full flex flex-col">
+    <el-radio-group v-model="type" class="mb-2" size="large">
+      <el-radio-button label="Default" />
+      <el-radio-button label="Loffee" />
+    </el-radio-group>
+    <div class="flex-1 flex justify-center items-center">
+      <MacOSKeyboard v-if="type === 'Default'" />
+      <LoffeeKeyboard v-if="type === 'Loffee'" />
+    </div>
   </div>
 </template>
