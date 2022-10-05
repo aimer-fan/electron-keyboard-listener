@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import * as echarts from 'echarts'
+import { InputNumberEmits } from 'element-plus';
 import { GlobalKeyboardListener, IGlobalKeyEvent } from 'node-global-key-listener';
 import { onMounted, ref, watch } from 'vue';
 import { isDark } from './useDark'
@@ -7,9 +8,12 @@ import { isDark } from './useDark'
 let barChartInstance: echarts.ECharts = null
 const barChartContainer = ref(null)
 let rankList: { name: string, count: number }[] = []
+const total = ref(0)
 
 const getRankList = async (): Promise<{ name: string, count: number }[]> => {
-  return await window.ElectronAPI.getRankList()
+  const data = await window.ElectronAPI.getRankList()
+  total.value = data.total
+  return data.list
 }
 
 const option = {
@@ -74,7 +78,12 @@ watch(isDark, async () => {
 </script>
 
 <template>
-  <div ref="barChartContainer" style="width: 900px;height: 314px;">
-    Rank
+  <div class="h-full flex justify-center items-center">
+    <div class="flex flex-col justify-center items-end">
+      <div class="mr-20">total: {{ total }}</div>
+      <div ref="barChartContainer" style="width: 900px;height: 314px;">
+        Rank
+      </div>
+    </div>
   </div>
 </template>

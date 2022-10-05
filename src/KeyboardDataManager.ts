@@ -39,9 +39,17 @@ export default class KeyboardDataManager {
   }
 
   getRankList (length: number) {
-    return Object.keys(this.data).map(key => ({ name: key, count: this.data[key] }))
+    const t = Object.keys(this.data).map(key => ({ name: key, count: this.data[key] }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, length)
+    
+      const total = t.reduce((prev, curr) => {
+        return prev + curr.count
+      }, 0)
+
+      return {
+        total,
+        list: t.slice(0, length)
+      }
   }
 
   clearData () {
