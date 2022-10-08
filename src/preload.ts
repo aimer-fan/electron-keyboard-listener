@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import Electron,  { contextBridge, ipcRenderer } from 'electron';
@@ -7,7 +8,7 @@ type ElectronCallback = (event: Electron.IpcRendererEvent, ...args: any[]) => vo
 
 export const ElectronAPI = {
   handleIpcKeyboardEvent: (callback: ElectronCallback) => ipcRenderer.on(IpcKeyboardEvent, callback),
-  getRankList: () => ipcRenderer.invoke(IpcGetRankData),
+  getRankList: (...args: any[]) => ipcRenderer.invoke(IpcGetRankData, ...args),
   clearData: () => ipcRenderer.invoke(IpcClearData)
 }
 

@@ -1,70 +1,68 @@
-import path from 'path'
-import fs from 'fs'
+import sqlite3 from 'sqlite3';
+import { formatDate } from './share';
+
+const sqlite = sqlite3.verbose();
+const db = new sqlite.Database('keyboard-listener.db');
 
 export default class KeyboardDataManager {
-  data: {
-    [k: string]: number
-  } = {}
-  file
 
   constructor () {
-    const HOME = process.env.HOME
-    this.file = path.resolve(HOME, 'electron-app-data.log')
-    if (!fs.existsSync(this.file)) {
-      fs.appendFileSync(this.file, '')
-    }
+    db.run(`CREATE TABLE IF NOT EXISTS record (key_name TEXT, create_time TEXT);`)
   }
 
-  load () {
-    const content = fs.readFileSync(this.file, 'utf-8')
-    this.handler(content)
-  }
-
-  handler (content: string) {
-    const list = content.split('\n')
-    list.forEach(item => {
-      const d = item.split('->')
-      const key = d[d.length-1].trim()
-      if (!key) return
-      if (this.data[key]) {
-        this.data[key]++
-      } else {
-        this.data[key] = 1
-      }
+  getRankList ({ begin, end, page, pageSize }: { begin: string, end: string, page: number, pageSize: number }) {
+    return new Promise((resolve, reject) => {
+      db.all(`
+        SELECT key_name as name, COUNT(key_name) as count
+        from record
+        WHERE create_time >= $begin AND create_time <= $end
+        GROUP BY key_name
+        ORDER BY COUNT(key_name) DESC
+        LIMIT $pageSize OFFSET $page;
+      `, {
+        $page: page,
+        $pageSize: pageSize,
+        $begin: begin,
+        $end: end
+      }, (err, data) => {
+        if (err) reject(err)
+        db.get('SELECT count(key_name) as total FROM record WHERE create_time >= $begin AND create_time <= $end', {
+          $begin: begin,
+          $end: end
+        }, (err, total) => {
+          if (err) reject(err)
+          const result = {
+            total: total.total,
+            list: data
+          }
+          resolve(result)
+        })
+      })
     })
   }
 
-  getData () {
-    return this.data
-  }
-
-  getRankList (length: number) {
-    const t = Object.keys(this.data).map(key => ({ name: key, count: this.data[key] }))
-      .sort((a, b) => b.count - a.count)
-    
-      const total = t.reduce((prev, curr) => {
-        return prev + curr.count
-      }, 0)
-
-      return {
-        total,
-        list: t.slice(0, length)
-      }
-  }
-
   clearData () {
-    this.data = {}
-    fs.writeFileSync(this.file, '')
+    return new Promise((resolve, reject) => {
+      db.run(`DELETE FROM record;`, function (err) {
+        if (err) reject(err)
+        resolve(true)
+      })
+    })
   }
 
-  // append and log to the file
+  dispose () {
+    db.close();
+  }
+
   append (e: { name: string }) {
     const {name} = e
-    if (!this.data[name]) this.data[name] = 1
-    else this.data[name]++
+    const time = formatDate(new Date())
 
-    const time = new Date(Date.now()).toLocaleString()
-    const log  = `${time} -> ${name}\n`
-    fs.appendFileSync(this.file, log)
+    return new Promise((resolve, reject) => {
+      db.run('INSERT INTO record VALUES (?, ?)', [name, time], err => {
+        if (err) reject(err)
+        resolve(true)
+      })
+    })
   }
 }

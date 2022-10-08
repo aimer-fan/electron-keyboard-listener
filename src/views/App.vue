@@ -36,8 +36,8 @@ const handleClearData = async () => {
       
     </div>
     <div class="flex-1">
-      <keyboard v-if="radio === 'Keyboard'" />
-      <rank v-if="radio === 'Rank'" />
+      <keyboard v-show="radio === 'Keyboard'" />
+      <rank v-show="radio === 'Rank'" />
     </div>
   </div>
 </template>

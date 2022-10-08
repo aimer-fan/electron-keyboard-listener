@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
 import { GlobalKeyboardListener } from 'node-global-key-listener';
 import { IpcClearData, IpcGetRankData, IpcKeyboardEvent } from './constant';
 import KeyboardDataManager from './KeyboardDataManager';
@@ -13,7 +13,6 @@ let globalKeyBoardListener: GlobalKeyboardListener
 let registeredIpcMainHandler = false
 
 const keyboardDataManager = new KeyboardDataManager()
-keyboardDataManager.load()
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -21,8 +20,14 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const handleIpcGetRankData = async () => {
-  return keyboardDataManager.getRankList(10)
+const handleIpcGetRankData = async (event: IpcMainInvokeEvent, params: { begin: string, end: string }) => {
+  const data = await keyboardDataManager.getRankList({
+    begin: params.begin,
+    end: params.end,
+    page: 0,
+    pageSize: 10
+  })
+  return data
 }
 
 const createWindow = (): void => {
@@ -53,15 +58,17 @@ const createWindow = (): void => {
 
   if (!registeredIpcMainHandler) {
     ipcMain.handle(IpcGetRankData, handleIpcGetRankData)
-    ipcMain.handle(IpcClearData, () => keyboardDataManager.clearData())
+    ipcMain.handle(IpcClearData, async () => await keyboardDataManager.clearData())
     registeredIpcMainHandler = true
   }
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (!app.isPackaged) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 // This method will be called when Electron has finished
@@ -74,6 +81,7 @@ app.on('ready', createWindow);
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    keyboardDataManager.dispose();
     app.quit();
   }
   console.log('window-all-closed')
