@@ -1,8 +1,11 @@
 import sqlite3 from 'sqlite3';
 import { formatDate } from './share';
+import path from 'path';
+
+const HOME = process.env.HOME
 
 const sqlite = sqlite3.verbose();
-const db = new sqlite.Database('keyboard-listener.db');
+const db = new sqlite.Database(path.resolve(HOME, 'keyboard-listener.db'));
 
 export default class KeyboardDataManager {
 

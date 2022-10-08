@@ -25,7 +25,7 @@ const getRankList = async (): Promise<{ name: string, count: number }[]> => {
     begin: formatDate(datetimeRange.value[0]),
     end: formatDate(datetimeRange.value[1])
   }
-  console.log('getRankList -> param', param)
+  // console.log('getRankList -> param', param)
   const data = await window.ElectronAPI.getRankList(param)
   total.value = data.total
   return data.list

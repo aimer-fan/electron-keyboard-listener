@@ -9,7 +9,8 @@ const config = {
     rules: require('./webpack.rules'),
   },
   externals: {
-    'node-global-key-listener': 'node-global-key-listener'
+    'node-global-key-listener': 'node-global-key-listener',
+    'sqlite3': 'sqlite3'
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
