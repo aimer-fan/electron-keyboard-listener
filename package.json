@@ -2,7 +2,7 @@
   "name": "electron-keyboard-listener",
   "productName": "electron-keyboard-listener",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "listen global keyboard event, based on electron and node-global-key-listener",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -11,7 +11,13 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "electron forge",
+    "global-keyboard-listener",
+    "vue",
+    "sqlite3"
+  ],
   "author": {
     "name": "AimerFan",
     "email": "1261105760@qq.com"
