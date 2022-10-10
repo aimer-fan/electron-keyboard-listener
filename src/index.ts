@@ -42,7 +42,7 @@ const createWindow = (): void => {
 
   // 绑定下全局事件
   if (!globalKeyBoardListener) {
-    const globalKeyBoardListener = new GlobalKeyboardListener()
+    globalKeyBoardListener = new GlobalKeyboardListener()
     globalKeyBoardListener.addListener((e) => {
       if (e.state === 'DOWN') {
         // console.log(e.name)
