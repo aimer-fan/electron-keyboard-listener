@@ -15,21 +15,37 @@ export default class KeyboardDataManager {
 
   getRankList ({ begin, end, page, pageSize }: { begin: string, end: string, page: number, pageSize: number }) {
     return new Promise((resolve, reject) => {
-      db.all(`
-        SELECT key_name as name, COUNT(key_name) as count
-        from record
-        WHERE create_time >= $begin AND create_time <= $end
-        GROUP BY key_name
-        ORDER BY COUNT(key_name) DESC
-        LIMIT $pageSize OFFSET $page;
-      `, {
+      let searchSQL = ''
+      let totalSQL = ''
+      if (begin && end) {
+        searchSQL = /*SQL*/`
+          SELECT key_name as name, COUNT(key_name) as count
+          from record
+          WHERE create_time >= $begin AND create_time <= $end
+          GROUP BY key_name
+          ORDER BY COUNT(key_name) DESC
+          LIMIT $pageSize OFFSET $page;
+        `
+        totalSQL = /*SQL*/`SELECT count(key_name) as total FROM record WHERE create_time >= $begin AND create_time <= $end`
+      } else {
+        searchSQL = /*SQL*/`
+          SELECT key_name as name, COUNT(key_name) as count
+          from record
+          GROUP BY key_name
+          ORDER BY COUNT(key_name) DESC
+          LIMIT $pageSize OFFSET $page;
+        `
+        totalSQL = /*SQL*/`SELECT count(key_name) as total FROM record`
+      }
+
+      db.all(searchSQL, {
         $page: page,
         $pageSize: pageSize,
         $begin: begin,
         $end: end
       }, (err, data) => {
         if (err) reject(err)
-        db.get('SELECT count(key_name) as total FROM record WHERE create_time >= $begin AND create_time <= $end', {
+        db.get(totalSQL, {
           $begin: begin,
           $end: end
         }, (err, total) => {
@@ -46,7 +62,7 @@ export default class KeyboardDataManager {
 
   clearData () {
     return new Promise((resolve, reject) => {
-      db.run(`DELETE FROM record;`, function (err) {
+      db.run(/*SQL*/`DROP TABLE record;`, function (err) {
         if (err) reject(err)
         resolve(true)
       })
@@ -62,7 +78,7 @@ export default class KeyboardDataManager {
     const time = formatDate(new Date())
 
     return new Promise((resolve, reject) => {
-      db.run('INSERT INTO record VALUES (?, ?)', [name, time], err => {
+      db.run(/*SQL*/`INSERT INTO record VALUES (?, ?)`, [name, time], err => {
         if (err) reject(err)
         resolve(true)
       })
