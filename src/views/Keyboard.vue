@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import { IGlobalKeyEvent } from 'node-global-key-listener';
-import LoffeeKeyboard from './keyboardLayouts/LoffeeKeyboard.vue';
-import emitter from './mitt';
-import { IpcKeyboardEvent, StorageKeyboardType } from '../constant';
-import MacOSKeyboard from './keyboardLayouts/MacOSKeyboard.vue'
 import { useStorage } from '@vueuse/core';
+import Electron from 'electron';
+import { IGlobalKeyEvent } from 'node-global-key-listener';
+import { onMounted } from 'vue';
+import { IpcKeyboardEvent, StorageKeyboardType } from '../constant';
+import LoffeeKeyboard from './keyboardLayouts/LoffeeKeyboard.vue';
+import MacOSKeyboard from './keyboardLayouts/MacOSKeyboard.vue';
+import emitter from './mitt';
 
-const type = useStorage(StorageKeyboardType, 'Default')
+const type = useStorage(StorageKeyboardType, 'Default');
 
 onMounted(() => {
   window.ElectronAPI.handleIpcKeyboardEvent((e: Electron.IpcRendererEvent, data: IGlobalKeyEvent) => {
-    emitter.emit(IpcKeyboardEvent, data)
-  })
-})
+    emitter.emit(IpcKeyboardEvent, data);
+  });
+});
 </script>
 
 <template>

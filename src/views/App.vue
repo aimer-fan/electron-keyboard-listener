@@ -1,23 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import ClearData from './header/ClearData.vue';
+import TriggerDatabaseFile from './header/TriggerDatabaseFile.vue';
+import TriggerTheme from './header/TriggerTheme.vue';
 import Keyboard from './Keyboard.vue';
-import { Sunny, Moon, Delete } from '@element-plus/icons-vue'
-import Rank from './Rank.vue'
-import { isDark } from './useDark'
-import { ElMessage, ElMessageBox } from 'element-plus';
+import Rank from './Rank.vue';
 
-const radio = ref('Keyboard')
-const clearData = () => {
-  window.ElectronAPI.clearData().then(() => {
-    ElMessage.success('删除成功')
-  })
-}
-const handleClearData = async () => {
-  try {
-    await ElMessageBox.confirm('确定删除所有数据？', '提示', { type: 'error' })
-    clearData()
-  } catch {}
-}
+const radio = ref('Keyboard');
 
 </script>
 
@@ -30,10 +19,11 @@ const handleClearData = async () => {
       </el-radio-group>
 
       <div class="flex justify-between items-center">
-        <el-button plain :icon="isDark ? Sunny : Moon" @click="isDark = !isDark"></el-button>
-        <el-button plain type="danger" :icon="Delete" @click="handleClearData"></el-button>
+        <trigger-database-file />
+        <trigger-theme />
+        <clear-data />
       </div>
-      
+
     </div>
     <div class="flex-1">
       <keyboard v-show="radio === 'Keyboard'" />

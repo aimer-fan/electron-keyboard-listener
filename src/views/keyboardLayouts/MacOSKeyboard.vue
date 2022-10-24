@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { EnumKeyboardName } from '../../constant';
+// eslint-disable-next-line import/no-unresolved
 import { KeyboardItemProps } from '../../interface';
 import KeyboardItem from '../KeyboardItem.vue';
 
-const _EnumKeyboardName = EnumKeyboardName
+// eslint-disable-next-line no-underscore-dangle
+const _EnumKeyboardName = EnumKeyboardName;
 
 const keyboardData: KeyboardItemProps[][] = [
   [
@@ -25,10 +27,10 @@ const keyboardData: KeyboardItemProps[][] = [
     { id: EnumKeyboardName.ZERO, name: '0)' },
     { id: EnumKeyboardName.MINUS, name: '-' },
     { id: EnumKeyboardName.EQUALS, name: '=+' },
-    { id: EnumKeyboardName.BACKSPACE, name: 'Backspace', style: {width: '100px'} },
+    { id: EnumKeyboardName.BACKSPACE, name: 'Backspace', style: { width: '100px' } },
   ],
   [
-    { id: EnumKeyboardName.TAB, name: 'Tab', style: {width: '75px'} },
+    { id: EnumKeyboardName.TAB, name: 'Tab', style: { width: '75px' } },
     { id: EnumKeyboardName.Q, name: 'Q' },
     { id: EnumKeyboardName.W, name: 'W' },
     { id: EnumKeyboardName.E, name: 'E' },
@@ -44,7 +46,7 @@ const keyboardData: KeyboardItemProps[][] = [
     { id: EnumKeyboardName.BACKSLASH, name: '\\|' },
   ],
   [
-    { id: EnumKeyboardName.CAPS_LOCK, name: 'Caps', style: {width: '90px'} },
+    { id: EnumKeyboardName.CAPS_LOCK, name: 'Caps', style: { width: '90px' } },
     { id: EnumKeyboardName.A, name: 'A' },
     { id: EnumKeyboardName.S, name: 'S' },
     { id: EnumKeyboardName.D, name: 'D' },
@@ -55,11 +57,11 @@ const keyboardData: KeyboardItemProps[][] = [
     { id: EnumKeyboardName.K, name: 'K' },
     { id: EnumKeyboardName.L, name: 'L' },
     { id: EnumKeyboardName.SEMICOLON, name: ';:' },
-    { id: EnumKeyboardName.QUOTE, name: '\"\'' },
-    { id: EnumKeyboardName.RETURN, name: 'Enter', style: {width: '110px'} },
+    { id: EnumKeyboardName.QUOTE, name: '"\'' },
+    { id: EnumKeyboardName.RETURN, name: 'Enter', style: { width: '110px' } },
   ],
   [
-    { id: EnumKeyboardName.LEFT_SHIFT, name: 'Shift', style: {width: '120px'} },
+    { id: EnumKeyboardName.LEFT_SHIFT, name: 'Shift', style: { width: '120px' } },
     { id: EnumKeyboardName.Z, name: 'Z' },
     { id: EnumKeyboardName.X, name: 'X' },
     { id: EnumKeyboardName.C, name: 'C' },
@@ -70,9 +72,9 @@ const keyboardData: KeyboardItemProps[][] = [
     { id: EnumKeyboardName.COMMA, name: ',<' },
     { id: EnumKeyboardName.DOT, name: '.>' },
     { id: EnumKeyboardName.FORWARD_SLASH, name: '/?' },
-    { id: EnumKeyboardName.RIGHT_SHIFT, name: 'Shift', style: {width: '130px'} },
+    { id: EnumKeyboardName.RIGHT_SHIFT, name: 'Shift', style: { width: '130px' } },
   ],
-]
+];
 
 </script>
 

@@ -1,9 +1,18 @@
-export const IpcKeyboardEvent = 'ipc-keyboard-event'
-export const IpcGetRankData = 'ipc-get-rank-data'
-export const IpcClearData = 'ipc-clear-data'
+export const IpcKeyboardEvent = 'ipc-keyboard-event';
+export const IpcGetRankData = 'ipc-get-rank-data';
+export const IpcClearData = 'ipc-clear-data';
+export const IpcGetDatabaseFilename = 'IPC_GET_DATABASE_FILENAME';
+export const IpcSwitchDatabaseFilename = 'IPC_SWITCH_DATABASE_FILENAME';
+export const IpcSaveDatabaseFilename = 'IPC_SAVE_DATABASE_FILENAME';
+export const IpcRestartApp = 'IPC_RESTART_APP';
 
-export const StorageKeyboardType = 'storage-key-board-type'
+export const StorageKeyboardType = 'storage-key-board-type';
+export const AppConfigStoreKey = 'ELECTRON_APP_CONFIG_STORE_KEY';
+export const DatabaseFilename = 'DATABASE_FILENAME';
 
+export const DefaultDatabaseName = 'keyboard-listener.db';
+
+// eslint-disable-next-line no-shadow
 export enum EnumKeyboardName {
   BACKTICK = 'BACKTICK',
   ESCAPE = 'ESCAPE',
@@ -74,4 +83,3 @@ export enum EnumKeyboardName {
   DOWN_ARROW = 'DOWN ARROW',
   RIGHT_ARROW = 'RIGHT ARROW',
 }
-

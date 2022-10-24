@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { IpcKeyboardEvent } from '../constant';
 import { onMounted, ref } from 'vue';
+import { IpcKeyboardEvent } from '../constant';
 import emitter from './mitt';
 
 const props = defineProps<{
   id: string,
   content: string,
   customStyle?: object,
-}>()
+}>();
 
-const active = ref(false)
+const active = ref(false);
 
 onMounted(() => {
   emitter.on(IpcKeyboardEvent, (data) => {
     if (data.name === props.id) {
-      active.value = data.state === 'DOWN'
+      active.value = data.state === 'DOWN';
     }
-  })
-})
+  });
+});
 </script>
 
 <template>

@@ -5,16 +5,27 @@
     "node": true
   },
   "extends": [
-    // "airbnb",
+    "airbnb-base",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/electron",
     "plugin:import/typescript",
-    "plugin:vue/vue3-recommended"
+    "plugin:vue/vue3-essential"
   ],
-  "parser": "@typescript-eslint/parser",
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
   "rules": {
+    "no-console": "off",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "vue/multi-word-component-names": "off",
+    "class-methods-use-this": "off",
+    "import/extensions": "off",
+    "max-len": ["error", { "code": 150 }],
+    "import/prefer-default-export": "off"
   }
 }

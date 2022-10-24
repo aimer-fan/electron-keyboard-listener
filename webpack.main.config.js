@@ -6,11 +6,12 @@ const config = {
   entry: './src/index.ts',
   // Put your normal webpack config below here
   module: {
+    // eslint-disable-next-line global-require
     rules: require('./webpack.rules'),
   },
   externals: {
     'node-global-key-listener': 'node-global-key-listener',
-    'sqlite3': 'sqlite3'
+    sqlite3: 'sqlite3',
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
@@ -21,6 +22,5 @@ const config = {
 // if (process.argv.indexOf('start') !== '-1') {
 //   config.externals['node-global-key-listener'] = 'node-global-key-listener'
 // }
-
 
 module.exports = config;
